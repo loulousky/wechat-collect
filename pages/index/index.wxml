@@ -1,7 +1,7 @@
 
 <view class="container" style="background-color:green">
 
-<canvas style="width: 100%; height: 500rpx;border:1px;position:absolute;top:0;left:0;right:0; solid black;"
+<canvas style="position:absolute;top:0;left:0;right:0;"
   canvas-id="first"
   disable-scroll="true"
   bindtouchstart="bindtouchstart"
@@ -13,8 +13,8 @@
 >
 </canvas >
 
-
-<button class="btn">兑换礼包</button>
 </view>
+<cover-view  class="btn" bindtouchstart="aaa">兑换礼包</cover-view> 
+
 
 

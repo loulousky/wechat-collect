@@ -23,8 +23,6 @@ Page({
   shape:[],
   //事件处理函数
   bindtouchstart: function (e) {
-
-
     this.wxCanvas.touchstartDetect(e);
 
   },
@@ -33,7 +31,6 @@ Page({
     this.wxCanvas.touchmoveDetect(e);
   },
   bindtouchend: function () {
-
     this.wxCanvas.touchendDetect();
   },
   bindtap: function (e) {
@@ -63,32 +60,23 @@ Page({
       //初始化中间的button
       //初始化3个的位置。在中间位置靠下初始化
       that.addPicToScreen(rect[1].width / 2, rect[1].height / 2 + 40,true);
-      //然后要进行位置的更新从初始化位置更新
+      //添加中间的按钮
 
     });
-
-
-
-  
   },
  
   /**
    * 动态添加图标初始化始终保持三个小浮标
    * 初始化的位置统一放在同一个位置，然后更新位置。
    */
-
   addPicToScreen(x,y,first){
     let that = this;
     let wxcan = that.wxCanvas;
-
-   
     that.shape = [];
-
-
     for (let i = 0; i < 3; i++) {
       let position=i;
       if (first || this.data.clickposition==i){
-        let img = new Shape('image', { x: x, y: y, w: 50, h: 50, file: "../../image/nl.png", opacity: 0 }, 'fill', false);
+        let img = new Shape('image', { x: x, y: y, w: 30, h: 30, file: "../../image/nl.png", opacity: 0 }, 'fill', false);
         let text = new Shape('text', {
           x: x - 15, y: y + 25, text: "碎片+" + i, fontSize: 10, opacity: 0,
           algin: "center",
@@ -96,7 +84,7 @@ Page({
         }, 'fill', false);
         wxcan.add(img);
         wxcan.add(text);
-        img.bind('touchstart', function () {
+        img.bind('touchend', function () {
           //清楚全部然后再来
           that.setData({
             clickposition: i
@@ -107,9 +95,9 @@ Page({
         that.shape[i] = { img, text }; 
       }else{
         //不是第一次进来了，positions中已经有值了
-        let img = new Shape('image', { x: that.data.pistions[i][0].x, y: that.data.pistions[i][0].y, w: 50, h: 50, file: "../../image/nl.png", opacity: 1 }, 'fill', false);
+        let img = new Shape('image', { x: that.data.pistions[i][0].x, y: that.data.pistions[i][0].y, w: 30, h: 30, file: "../../image/nl.png", opacity: 1 },         'fill', false);
         let text = new Shape('text', {
-          x: that.data.pistions[i][1].x, y: that.data.pistions[i][1].y, text: "碎片+" + i, fontSize: 10, opacity: 0,
+          x: that.data.pistions[i][1].x, y: that.data.pistions[i][1].y, text: "碎片+" + i, fontSize: 10, opacity: 1,
           algin: "center",
           fillStyle: "#E6781E"
         }, 'fill', false);
@@ -142,15 +130,24 @@ Page({
     let width = this.data.canvaswidth;
     let height = this.data.canvasheight;
     for(let i=0;i<3;i++){
-     let nowx=Math.random()*(width)+50;
-     let nowy=Math.random()*(height)+50;
+     let nowx=Math.random()*(width);
+     let nowy=Math.random()*(height);
 
      if(nowx>width){
        nowx=width-60;
      }
 
-     if(nowy>height){
-       nowy=height-60;
+     if(nowx<60){
+       nowx=80;
+     }
+
+
+     if(nowy>height-60){
+       nowy=height-100;
+     }
+
+     if(nowy<60){
+       nowy=80;
      }
      //避免生成的位置在button的区域，遮挡button
       if (nowx >= that.data.btnrect.left && nowx <= that.data.btnrect.right){
@@ -285,9 +282,26 @@ Page({
       //然后要进行位置的更新从初始化位置更新
 
     }).exec();
-  }
+  },
+
+
+  aaa:function(){
+
+   wx.showToast({
+     title: '点击了button',
+   })
+
+  },
    
-  
+   /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+    this.wxCanvas.clear();
+
+  },
+
 
 
 });
